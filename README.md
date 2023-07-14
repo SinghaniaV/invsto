@@ -1,13 +1,13 @@
 # How to
 
-Install requirements
+Install requirements - 
 
-```pip install requirements.txt```
+```pip install -r requirements.txt```
 
 Enter the credentials in database module - 
 
 ```SQLALCHEMY_DATABASE_URL = 'mysql://<user>:<password>@<host>:<post>/<database>'```
 
-run the app
+run the app - 
 
 `uvicorn main:app`
