@@ -7,7 +7,7 @@ class Tick_data(Base):
 
 	id = Column(Integer, primary_key=True, autoincrement=True)
 	datetime = Column(DateTime)
-	close = Column(Float)
+	close = Column('close', Float)
 	high = Column(Float)
 	low = Column(Float)
 	open = Column(Float)
@@ -22,3 +22,6 @@ class Tick_data(Base):
 		self.open = open
 		self.volume = volume
 		self.instrument = instrument
+
+	def __repr__(self):
+		return f'({self.datetime}, {self.close}, {self.high}, {self.low}, {self.open}, {self.volume}, {self.instrument})'

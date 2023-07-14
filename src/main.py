@@ -1,28 +1,24 @@
-from fastapi import FastAPI
-from database import engine, Session, Base
+from fastapi import FastAPI, UploadFile
+from database import engine, session, Base
 from models import Tick_data
-import pandas as pd
+from insert import read_data, insert_data
+import io
 
 app = FastAPI()
 
 Base.metadata.create_all(engine)
 
-try:
-	df = pd.read_excel('..\data\HINDALCO.xlsx')
-except Exception as e:
-	print('Unable to access csv file', repr(e))
-	
-try:
-	for index, row in df.iterrows():
-		data = Tick_data(datetime=row['datetime'], close=row['close'], high=['high'], low=['low '], open=['open'], volume=['volume'], instrument=['instrument'])
-		Session.add(data)
+@app.post("/uploadfile")
+async def upload_file(file: UploadFile):
+    if file.filename.endswith('.xlsx'):
+        f = await file.read()
+        xlsx = io.BytesIO(f)
 
-except Exception as e:
-	Session.rollback()
-	print('Unable to populate tables', repr(e))
-else:
-	Session.commit()
+        data = read_data(xlsx)
+        insert_data(data)
+        
+        return f'{file.filename} uploaded successfully'
 
-@app.get('/')
-def index():
-    return "done"
+@app.get("/viewfile")
+def view_file():
+    return session.query(Tick_data).all()
