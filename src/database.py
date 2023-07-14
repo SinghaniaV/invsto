@@ -2,7 +2,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import create_engine
 
 try:
-	SQLALCHEMY_DATABASE_URL = 'mysql://root:lastpass@localhost:3306/invsto'
+	SQLALCHEMY_DATABASE_URL = 'mysql://<user>:<password>@<host>:<post>/<database>'
 	engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 except Exception as e:
